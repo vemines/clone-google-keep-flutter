@@ -44,3 +44,5 @@ app.*.map.json
 /lib/firebase_options.dart
 /web
 /lib/src/shared/constants/value.dart
+/android/app/google-services.json
+/keystore

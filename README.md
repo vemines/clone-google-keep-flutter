@@ -8,10 +8,10 @@ Use Flutterfire cli for generate "firebase_options.dart"
 Use make regen for rebuild all assets (or excute directly command in Makefile)
 
 ## Feature
-Signin as Guest/Email/Google (add email to test)
+Signin as Guest/Email/Googl
 Setting (not effect)
 Home Note
-Add Note
+Add/Edit Note
 
 ## Other
 ### 'Hand drawn' [flutter_drawing_board](https://github.com/JideGuru/flutter_drawing_board)
