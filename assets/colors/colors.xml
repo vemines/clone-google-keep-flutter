@@ -1,0 +1,12 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+    <color name="background_dark">#121212</color>
+    <color name="on_primary_dark">#eeeeee</color>
+    <color name="textfield_bg_dark">#202125</color>
+    <color name="primary_dark">#0842a0</color>
+    <color name="on_primary_container">#072e6e</color>
+    <color name="primary_varivant_dark">#0842a0</color>
+</resources>

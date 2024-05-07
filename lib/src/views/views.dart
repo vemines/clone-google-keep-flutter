@@ -1,0 +1,13 @@
+export 'home/home_view.dart';
+export 'archive/archive_view.dart';
+export 'auth/auth_view.dart';
+export 'auth/reset_pass_view.dart';
+export 'labels/edit_labels_view.dart';
+export 'labels/select_labels_view.dart';
+export 'labels/label_view.dart';
+export 'note/note_view.dart';
+export 'remind/remind_view.dart';
+export 'search/search_view.dart';
+export 'settings/setting_view.dart';
+export 'trash/trash_view.dart';
+export 'draw_pad/draw_pad_view.dart';

@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "name": "debug",
+            "request": "launch",
+            "type": "dart",
+            // "args": ["-d", "chrome","--web-port", "9099"],
+        }
+    ]
+}

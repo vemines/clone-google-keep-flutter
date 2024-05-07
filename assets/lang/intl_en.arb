@@ -1,0 +1,18 @@
+{
+  "@@locale": "en",
+  "hello": "Hello",
+  "@hello": {
+    "description": "test locate in preview"
+  },
+   "param": "Param input is {param}",
+  "@param": {
+    "description": "The text with param",
+    "placeholders": {
+      "param": {}
+    }
+  },
+  "appTitle": "Bloc Starter",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}

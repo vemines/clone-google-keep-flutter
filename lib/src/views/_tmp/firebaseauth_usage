@@ -1,0 +1,60 @@
+  Future<void> test() async {
+    Auth? auth = FirebaseAuth.instance.currentAuth;
+
+    if (auth != null) {
+      await _printAuth(auth);
+      // Send email verification
+      if (!auth.emailVerified && auth.email != null) {
+        await auth.sendEmailVerification();
+        print("Verification email sent.");
+      }
+      // Get auth's token
+
+      try {
+        await _updateAuth(auth);
+        print("Auth information updated successfully.");
+      } catch (e) {
+        print("An error occurred while updating auth information: $e");
+      }
+
+      await auth.reload();
+      auth = FirebaseAuth.instance.currentAuth;
+      if (auth != null) {
+        await _printAuth(auth);
+
+        final String? token = await auth.getIdToken();
+        final IdTokenResult tokenResult = await auth.getIdTokenResult();
+        final String? refreshToken = await auth.refreshToken;
+        print("Auth getIdToken: $token");
+        print("Auth getIdTokenResult: $tokenResult");
+        print("Auth refreshToken: $refreshToken");
+      }
+    } else {
+      print("No auth is signed in.");
+    }
+  }
+
+  Future<void> _printAuth(Auth auth) async {
+    print("Auth ID: ${auth.uid}");
+    print("Email: ${auth.email}");
+    print("Display Name: ${auth.displayName}");
+    print("Photo URL: ${auth.photoURL}");
+    print("Email Verified: ${auth.emailVerified}");
+    print("Auth is Anonymous: ${auth.isAnonymous}");
+    print("Auth Metadata: ${auth.metadata}");
+    print("Auth MultiFactor: ${auth.multiFactor}");
+    print("Auth Provider Data: ${auth.providerData}");
+    print("Auth TenantId: ${auth.tenantId}");
+  }
+
+  Future<void> _updateAuth(Auth auth) async {
+    await auth.verifyBeforeUpdateEmail("mailaphat3@gmail.com");
+    await auth.updatePassword("newPassword");
+    await auth.updateDisplayName("New Name");
+    await auth.updatePhotoURL("newPhotoUrl");
+    auth.reload();
+  }
+
+  Future<void> _deleteAuth(Auth auth) async {
+    await auth.delete();
+  }
