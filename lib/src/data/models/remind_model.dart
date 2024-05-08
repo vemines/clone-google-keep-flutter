@@ -33,17 +33,19 @@ class RemindModel {
   });
 
   factory RemindModel.fromMap(Map<String, dynamic> data) => RemindModel(
-        date: DateTime.parse(data['date'] as String),
-        repeatType: RepeatType.values[data['repeatType'] as int],
+        date: DateTime.tryParse(data['date'].toString()),
+        repeatType: RepeatType.values[(data['repeatType'] as int?) ?? 0],
         markAsDone: data['markAsDone'] as bool?,
-        customRemindEvent: CustomRemindEvent.fromMap(
-          data["customremindEvent"] as Map<String, dynamic>,
-        ),
+        customRemindEvent: data["customremindEvent"] != null
+            ? CustomRemindEvent.fromMap(
+                data["customremindEvent"] as Map<String, dynamic>,
+              )
+            : null,
       );
 
   Map<String, dynamic> toMap() {
     return {
-      'date': date,
+      'date': date?.toIso8601String(),
       'repeatType': repeatType?.index,
       'customRemindEvent': customRemindEvent?.toMap(),
       'markAsDone': markAsDone,

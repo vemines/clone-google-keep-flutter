@@ -70,7 +70,14 @@ class _TrashViewState extends State<TrashView> {
                           onArchived: () {},
                           onRemind: () {},
                           onLabels: () {},
-                          onDelete: () {},
+                          onDelete: () {
+                            noteService.deleteListNote(selectItems
+                                .map((e) => e.id.toString())
+                                .toList());
+                            isMultiSelect = true;
+                            selectItems.clear();
+                            setState(() {});
+                          },
                           onChangeNoteBg: () {},
                           onMakeCopy: () {},
                           onSend: () {},

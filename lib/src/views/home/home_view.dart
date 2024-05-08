@@ -82,7 +82,14 @@ class _HomeViewState extends State<HomeView> {
                           onArchived: () {},
                           onRemind: () {},
                           onLabels: () {},
-                          onDelete: () {},
+                          onDelete: () {
+                            noteService.deleteListNote(selectItems
+                                .map((e) => e.id.toString())
+                                .toList());
+                            isMultiSelect = true;
+                            selectItems.clear();
+                            setState(() {});
+                          },
                           onChangeNoteBg: () {},
                           onMakeCopy: () {},
                           onSend: () {},

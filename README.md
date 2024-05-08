@@ -7,16 +7,10 @@ Clone google keep with FireStore database
 Use Flutterfire cli for generate "firebase_options.dart"
 Use make regen for rebuild all assets (or excute directly command in Makefile)
 
-## Feature
-Signin as Guest/Email/Googl
-Setting (not effect)
-Home Note
-Add/Edit Note
-
 ## Other
 ### 'Hand drawn' [flutter_drawing_board](https://github.com/JideGuru/flutter_drawing_board)
 
-## Backlog (watch TODO in problems)
+## Backlog (exclude TODO in problems)
 // auth
 account dialog
 auto login
@@ -27,13 +21,10 @@ edit profile
 policy/term
 
 // create/edit note
-playable record
 make copy
 send
 collaborator
-add remind, remind with pick date/time, pick a place
-note color, note background
-
+add remind date/time, pick a place
 apply settings
 
 // search
@@ -47,11 +38,9 @@ theme setting
 language setting
 
 // storage
-save assets function to cache folder
-save nessesary assets to cache folder
+download nessesary file to cache folder when sync
 
 // later
 textStyle dialog (Note view)
 Note content style TextField.rich
-multi select
 encrypt/decrypt note

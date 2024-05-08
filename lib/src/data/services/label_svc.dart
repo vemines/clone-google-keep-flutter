@@ -41,6 +41,13 @@ class LabelService {
     await labelsCollection.doc(label.id).set(label.toMap());
   }
 
+  Future<void> deleteLabel(String uid, String labelId) async {
+    if (labelId != "") {
+      var labelsCollection = _getLabelsCollection(uid);
+      await labelsCollection.doc(labelId).delete();
+    }
+  }
+
   Future<String> getLabelById(String uid, String labelId) async {
     var labelsCollection = _getLabelsCollection(uid);
     var doc = await labelsCollection.doc(labelId).get();

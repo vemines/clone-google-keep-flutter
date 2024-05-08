@@ -42,6 +42,14 @@ class NoteWidget extends StatelessWidget {
                 : context.colorScheme.outlineVariant,
             width: selected ? 2 : 1,
           ),
+          image: note.bgNote != 0
+              ? DecorationImage(
+                  image: Image.asset(intToBgNoteImage(note.bgNote)!).image,
+                  fit: BoxFit.cover)
+              : null,
+          color: note.bgNote == 0 && note.bgColor != 0
+              ? intToBgNoteColor(note.bgColor)
+              : null,
         ),
         child: InkWell(
           onTap: onTap,
@@ -112,6 +120,9 @@ class NoteWidget extends StatelessWidget {
                   ),
                 if ((note.records?.length ?? 0) > 0 || note.remind != null)
                   Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    runSpacing: Dimensions.small,
+                    spacing: Dimensions.small,
                     children: [
                       if ((note.records?.length ?? 0) > 0)
                         for (var i = 0; i < note.records!.length; i++)
@@ -166,6 +177,15 @@ class NoteWidget extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                if (note.bgNote != 0 && note.bgColor != 0)
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: intToBgNoteColor(note.bgColor),
+                    ),
+                    width: 24,
+                    height: 24,
                   ),
               ].separateCenter(),
             ),

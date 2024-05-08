@@ -52,9 +52,6 @@ class _EditLabelsViewState extends State<EditLabelsView> {
   }
 
   Future<void> saveLabels() async {
-    textFieldContrs.forEach((element) {
-      print(element.text);
-    });
     for (var i = 1; i < labels.length; i++) {
       labels[i].label = textFieldContrs[i].text;
     }
@@ -62,15 +59,12 @@ class _EditLabelsViewState extends State<EditLabelsView> {
         label.label.isEmpty ||
         // ======= not check same label && have diffence label String
         labels.any((l) => l != label && l.label == label.label));
-    labels.forEach((element) {
-      print(element.label);
-    });
+
     labelService.updateLabels(uid, labels);
   }
 
   Future<void> initLabels() async {
     final currentLabels = await labelService.getCurrentLabels(uid);
-    print(currentLabels.length);
     labels.addAll(currentLabels);
 
     focusNodes

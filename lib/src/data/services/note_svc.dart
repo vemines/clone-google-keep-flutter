@@ -132,7 +132,7 @@ class NoteService {
   dynamic queryByCriteria(
     Criteria criteria,
     List<NoteModel> notes,
-    String? label,
+    String? labelId,
   ) {
     switch (criteria) {
       case Criteria.home:
@@ -141,7 +141,7 @@ class NoteService {
             .toList();
       case Criteria.byLabel:
         return notes
-            .where((note) => ((note.labelIds ?? []).contains(label)))
+            .where((note) => ((note.labelIds ?? []).contains(labelId)))
             .toList();
       case Criteria.pinnedHome:
         return notes
@@ -219,6 +219,20 @@ class NoteService {
         List.from((authSnapshot.data() as Map<String, dynamic>)['notes'] ?? []);
     notesList.removeWhere((noteId) => noteIds.contains(noteId));
     await authDocRef.update({'notes': notesList});
+  }
+
+  Future<void> removeLabel(String labelId) async {
+    final notesCol = getNotesCollectionRef(uid);
+    var query = notesCol.where('tagLabels', arrayContains: labelId);
+    print(query.count());
+    query.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        var tagLabels = List<String>.from(doc['tagLabels']);
+        tagLabels.remove(labelId);
+
+        notesCol.doc(doc.id).update({'tagLabels': tagLabels});
+      });
+    });
   }
 
   Future<void> sendListNote(List<String> noteIds) async {}

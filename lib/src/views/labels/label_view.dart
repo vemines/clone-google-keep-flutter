@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/note/note_bloc.dart';
 import '../../data/models/label_model.dart';
+import '../../data/services/label_svc.dart';
 import '../../data/services/note_svc.dart';
 import '../../shared/shared.dart';
 import '../../data/models/note_model.dart';
@@ -20,12 +21,14 @@ class LabelView extends StatefulWidget {
 }
 
 class _LabelViewState extends State<LabelView> {
+  late String _label;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   bool isGrid = true;
   late NoteBloc noteBloc;
   late AuthBloc authBloc;
   late String uid;
   late NoteService noteService;
+  late LabelService labelService;
   // multi select
   HashSet<NoteModel> selectItems = HashSet();
   bool isMultiSelect = false;
@@ -36,6 +39,8 @@ class _LabelViewState extends State<LabelView> {
     authBloc = BlocProvider.of<AuthBloc>(context);
     uid = (authBloc.state as AuthStateAuthenticated).uid;
     noteService = NoteService(uid);
+    labelService = LabelService.instance;
+    _label = widget.label.label;
   }
 
   @override
@@ -46,7 +51,7 @@ class _LabelViewState extends State<LabelView> {
         builder: (blocContext, state) {
           final LabelNoteBloc noteBloc = blocContext.read<LabelNoteBloc>();
           if (state is NoteStateInital)
-            noteBloc.add(GetNoteByLabelEvent(widget.label.label));
+            noteBloc.add(GetNoteByLabelEvent(widget.label.id ?? ""));
           if (state is NoteLoadingState)
             return CenterIndicator();
           else if (state is NoteLoadErrorState) {
@@ -74,13 +79,20 @@ class _LabelViewState extends State<LabelView> {
                           onArchived: () {},
                           onRemind: () {},
                           onLabels: () {},
-                          onDelete: () {},
+                          onDelete: () {
+                            noteService.deleteListNote(selectItems
+                                .map((e) => e.id.toString())
+                                .toList());
+                            isMultiSelect = true;
+                            selectItems.clear();
+                            setState(() {});
+                          },
                           onChangeNoteBg: () {},
                           onMakeCopy: () {},
                           onSend: () {},
                         ).preferredSizeAppBar()
                       : AppBarWidget(
-                          title: widget.label.label,
+                          title: _label,
                           scaffoldKey: scaffoldKey,
                           showSearch: true,
                           showGrid: true,
@@ -101,10 +113,29 @@ class _LabelViewState extends State<LabelView> {
                             onSelected: (value) {
                               switch (value) {
                                 case 1:
-                                  // TODO handle rename label
+                                  showSingleTextFieldDialog(
+                                    context,
+                                    "Rename Label",
+                                    confirmText: "Rename",
+                                    initText: widget.label.label,
+                                    onConfirm: (l) {
+                                      var updateLabel = widget.label..label = l;
+                                      labelService.updateLabel(
+                                        uid,
+                                        updateLabel,
+                                      );
+
+                                      setState(() {
+                                        _label = l;
+                                      });
+                                    },
+                                  );
                                   break;
                                 case 2:
-                                  // TODO handle delete label
+                                  labelService.deleteLabel(
+                                      uid, widget.label.id ?? "");
+                                  noteService.removeLabel(widget.label.id!);
+                                  context.pushNamed(Routes.home);
                                   break;
                               }
                             },
@@ -128,7 +159,8 @@ class _LabelViewState extends State<LabelView> {
                       }
                       // for fix hot reload cause snapshot null data
                       if (noteBloc.state is! LabelNotesLoadedState) {
-                        noteBloc.add(GetNoteByLabelEvent(widget.label.label));
+                        noteBloc
+                            .add(GetNoteByLabelEvent(widget.label.id ?? ""));
                       }
                       return const EmptyNoteBodyCenter(
                         iconData: Icons.label_outline,
@@ -167,7 +199,7 @@ class _LabelViewState extends State<LabelView> {
             );
           } else {
             if (noteBloc.state is! LabelNotesLoadedState) {
-              noteBloc.add(GetNoteByLabelEvent(widget.label.label));
+              noteBloc.add(GetNoteByLabelEvent(widget.label.id ?? ""));
             }
             return CenterIndicator();
           }

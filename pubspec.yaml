@@ -79,11 +79,13 @@ flutter_gen:
       - assets/colors/colors.xml
 
 flutter_native_splash:
-  color: "#ffffff"
-  background_image: "assets/png/splash_light.png"
-  color_dark: "#121212"
-  background_image_dark: "assets/png/splash_dark.png"
+  color: "#FFFFFF"
+  image: assets/png/splash_light.png
+  color_dark: "#1a1a1a"
+  image_dark: assets/png/splash_dark.png
 
-  android: true
-  ios: false
-  web: false
+  android_12:
+    icon_background_color: "#FFFFFF"
+    branding: assets/png/branding_light.png
+    icon_background_color_dark: "#1a1a1a"
+    branding_dark: assets/png/branding_dark.png

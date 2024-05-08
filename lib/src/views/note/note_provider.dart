@@ -8,6 +8,7 @@ import 'package:keep_app/src/data/services/note_svc.dart';
 import '../../data/models/image_model.dart';
 import '../../data/models/note_model.dart';
 import '../../data/models/record_model.dart';
+import '../../data/models/remind_model.dart';
 import '../../data/models/setting_model.dart';
 import '../../data/models/todo_model.dart';
 import '../../routes/app_pages.dart';
@@ -45,10 +46,19 @@ class NoteProvider with ChangeNotifier {
   }
 
   Future<void> clear() async {
-    _currentNote = NoteModel(title: "", content: "");
-    if (_currentNote.id != null) {
-      noteService.updateNote(_currentNote.id!, _currentNote);
-    }
+    String? id = _currentNote.id;
+    delete();
+    _currentNote.id = id;
+    notifyListeners();
+  }
+
+  void setBgNoteColor(int color) {
+    _currentNote.bgColor = color;
+    notifyListeners();
+  }
+
+  void setBgNoteImage(int image) {
+    _currentNote.bgNote = image;
     notifyListeners();
   }
 
@@ -214,7 +224,18 @@ class NoteProvider with ChangeNotifier {
               ),
               leading: Icon(Icons.access_time_outlined),
               onTap: () async {
-                // _currentNote.remind = RemindModel();
+                final time = stringToTimeOfDay(settingsModel.morningRemind);
+                final hour = time.hour;
+                final minute = time.minute;
+                _currentNote.remind = RemindModel(
+                  date: DateTime.now().add(Duration(days: 1)).copyWith(
+                        hour: hour,
+                        minute: minute,
+                        second: 0,
+                      ),
+                );
+                notifyListeners();
+                context.pop();
               },
             ),
             ListTile(
@@ -224,7 +245,20 @@ class NoteProvider with ChangeNotifier {
                 style: textStyle,
               ),
               leading: Icon(Icons.access_time_outlined),
-              onTap: () {},
+              onTap: () {
+                final time = stringToTimeOfDay(settingsModel.afternoonRemind);
+                final hour = time.hour;
+                final minute = time.minute;
+                _currentNote.remind = RemindModel(
+                  date: DateTime.now().add(Duration(days: 1)).copyWith(
+                        hour: hour,
+                        minute: minute,
+                        second: 0,
+                      ),
+                );
+                notifyListeners();
+                context.pop();
+              },
             ),
             ListTile(
               title: Text("Tomorrow evening"),
@@ -233,7 +267,20 @@ class NoteProvider with ChangeNotifier {
                 style: textStyle,
               ),
               leading: Icon(Icons.access_time_outlined),
-              onTap: () {},
+              onTap: () {
+                final time = stringToTimeOfDay(settingsModel.eveningRemind);
+                final hour = time.hour;
+                final minute = time.minute;
+                _currentNote.remind = RemindModel(
+                  date: DateTime.now().add(Duration(days: 1)).copyWith(
+                        hour: hour,
+                        minute: minute,
+                        second: 0,
+                      ),
+                );
+                notifyListeners();
+                context.pop();
+              },
             ),
             ListTile(
               title: Text("Home", style: TextStyle(color: unselectColor)),
@@ -248,12 +295,18 @@ class NoteProvider with ChangeNotifier {
             ListTile(
               title: Text("Pick a date & time"),
               leading: Icon(Icons.access_time_outlined),
-              onTap: () {},
+              onTap: () {
+                // _currentNote.remind = RemindModel();
+                context.pop();
+              },
             ),
             ListTile(
               title: Text("Pick a place"),
               leading: Icon(Icons.place_outlined),
-              onTap: () {},
+              onTap: () {
+                //  _currentNote.remind = RemindModel();
+                context.pop();
+              },
             ),
           ],
         );

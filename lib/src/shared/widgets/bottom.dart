@@ -92,25 +92,55 @@ class NoteBottomNav extends StatelessWidget {
           ),
           iconBox(
             onTap: () async {
-              final XFile? imageFile = await takePhoto();
-              if (imageFile != null) {
-                final cacheDir = await cacheDirectory();
-                String fileName = fileNameByTimestamp("image", "png");
-                final savedImagePath = '$cacheDir/$fileName';
-                await imageFile.saveTo(savedImagePath);
+              showDialog(
+                context: context,
+                builder: (context) => AddImageMethodDialog(
+                  takePhoto: () async {
+                    final XFile? imageFile = await takePhoto();
+                    if (imageFile != null) {
+                      final cacheDir = await cacheDirectory();
+                      String fileName = fileNameByTimestamp("image", "png");
+                      final savedImagePath = '$cacheDir/$fileName';
+                      await imageFile.saveTo(savedImagePath);
 
-                await storageHelper.uploadFileToStorage(
-                    savedImagePath, "$uid/image/$fileName");
+                      await storageHelper.uploadFileToStorage(
+                          savedImagePath, "$uid/image/$fileName");
 
-                context.pushNamed(
-                  Routes.note,
-                  extra: emptyNote(
-                    route,
-                    imageUrl: savedImagePath,
-                    labelId: label?.id,
-                  ),
-                );
-              }
+                      context.pushNamed(
+                        Routes.note,
+                        extra: emptyNote(
+                          route,
+                          imageUrl: savedImagePath,
+                          labelId: label?.id,
+                        ),
+                      );
+                    }
+                    context.pop();
+                  },
+                  chooseImage: () async {
+                    XFile? imageFile = await pickImage();
+
+                    if (imageFile != null) {
+                      final cacheDir = await cacheDirectory();
+                      String fileName = fileNameByTimestamp("image", "png");
+                      final savedImagePath = '$cacheDir/$fileName';
+                      await imageFile.saveTo(savedImagePath);
+
+                      await storageHelper.uploadFileToStorage(
+                          savedImagePath, "$uid/image/$fileName");
+                      context.pushNamed(
+                        Routes.note,
+                        extra: emptyNote(
+                          route,
+                          imageUrl: savedImagePath,
+                          labelId: label?.id,
+                        ),
+                      );
+                    }
+                    context.pop();
+                  },
+                ),
+              );
             },
             iconData: Icons.image_outlined,
           ),

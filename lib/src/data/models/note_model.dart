@@ -13,37 +13,37 @@ part 'note_model.g.dart';
 
 enum BgNote { none, bgNote1, bgNote2, bgNote3 }
 
-String? bgNoteAssets(BgNote bgnote) {
+enum BgColor { none, red, orange, brown, green, purple }
+
+String? intToBgNoteImage(int bgnote) {
   switch (bgnote) {
-    case BgNote.bgNote1:
+    case 1:
       return Assets.jpg.bg1.path;
-    case BgNote.bgNote2:
+    case 2:
       return Assets.jpg.bg2.path;
-    case BgNote.bgNote3:
+    case 3:
       return Assets.jpg.bg3.path;
     default:
       return null;
   }
 }
 
-Color? bgNoteColor(BgColor bgColor) {
+Color? intToBgNoteColor(int bgColor) {
   switch (bgColor) {
-    case BgColor.red:
-      return Colors.red[300];
-    case BgColor.orange:
-      return Colors.orange[300];
-    case BgColor.brown:
-      return Colors.brown[300];
-    case BgColor.green:
-      return Colors.green[300];
-    case BgColor.purple:
-      return Colors.purple[300];
+    case 1:
+      return Colors.red[400];
+    case 2:
+      return Colors.orange[400];
+    case 3:
+      return Colors.brown[400];
+    case 4:
+      return Colors.green[400];
+    case 5:
+      return Colors.purple[400];
     default:
       return null;
   }
 }
-
-enum BgColor { none, red, orange, brown, green, purple }
 
 @HiveType(typeId: 1)
 class NoteModel {
@@ -179,7 +179,7 @@ class NoteModel {
         'content': content,
         'todos': todos?.map((todo) => todo.toMap()).toList(),
         'records': records?.map((record) => record.toMap()).toList(),
-        'remind': remind,
+        'remind': remind?.toMap(),
         'tagLabels': labelIds?.toList(),
         'imageUrls': imageUrls?.map((image) => image.toMap()).toList(),
         'pinned': pinned,

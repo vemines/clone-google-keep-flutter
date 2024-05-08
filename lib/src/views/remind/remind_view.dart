@@ -84,7 +84,14 @@ class _RemindViewState extends State<RemindView> {
                                 onArchived: () {},
                                 onRemind: () {},
                                 onLabels: () {},
-                                onDelete: () {},
+                                onDelete: () {
+                                  noteService.deleteListNote(selectItems
+                                      .map((e) => e.id.toString())
+                                      .toList());
+                                  isMultiSelect = true;
+                                  selectItems.clear();
+                                  setState(() {});
+                                },
                                 onChangeNoteBg: () {},
                                 onMakeCopy: () {},
                                 onSend: () {},
@@ -102,7 +109,6 @@ class _RemindViewState extends State<RemindView> {
                                   setState(() {
                                     isGrid = !isGrid;
                                   });
-                                  print(isGrid);
                                 },
                               ).preferredSizeAppBar(),
                         drawer: AppDrawer(),

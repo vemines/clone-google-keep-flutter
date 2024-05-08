@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../shared.dart';
 
 class MoreVertMenuPopup extends StatelessWidget {
@@ -215,4 +216,90 @@ class AccountDialog extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
     );
   }
+}
+
+class AddImageMethodDialog extends StatelessWidget {
+  const AddImageMethodDialog({
+    super.key,
+    required this.takePhoto,
+    required this.chooseImage,
+  });
+
+  final Function() takePhoto;
+  final Function() chooseImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Add image"),
+      titlePadding: const EdgeInsets.all(Dimensions.normal),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(RadiusBorder.normal),
+      ),
+      backgroundColor: ColorName.backgroundDark,
+      content: Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text("Take Photo"),
+                onTap: takePhoto,
+                leading: Icon(Icons.camera_alt_outlined),
+              ),
+              ListTile(
+                title: Text("Choose image"),
+                onTap: chooseImage,
+                leading: Icon(Icons.image_outlined),
+              ),
+            ],
+          ),
+        ),
+      ),
+      contentPadding: EdgeInsets.zero,
+    );
+  }
+}
+
+void showSingleTextFieldDialog(
+  BuildContext context,
+  String dialogTitle, {
+  String? initText,
+  String? confirmText,
+  required Function(String) onConfirm,
+}) {
+  TextEditingController _textFieldController = TextEditingController(
+    text: initText,
+  );
+
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return AlertDialog(
+        title: Text(dialogTitle),
+        content: TextField(
+          controller: _textFieldController,
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              context.pop();
+            },
+          ),
+          TextButton(
+            child: Text(confirmText ?? 'Confirm'),
+            onPressed: () {
+              onConfirm(_textFieldController.text);
+              context.pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

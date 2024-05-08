@@ -106,15 +106,17 @@ class LabelNoteBloc extends NoteBloc {
     GetNoteByLabelEvent event,
     Emitter<NoteState> emit,
   ) async {
-    emit(NoteLoadingState());
-    try {
-      final notesByLabel = await service.getNotesByCriteriaStream(
-        criteria: Criteria.byLabel,
-        label: event.label,
-      );
-      emit(LabelNotesLoadedState(notesByLabel));
-    } on Exception catch (e) {
-      emit(NoteLoadErrorState(e.toString()));
+    if (event.labelId.isNotEmpty) {
+      emit(NoteLoadingState());
+      try {
+        final notesByLabel = await service.getNotesByCriteriaStream(
+          criteria: Criteria.byLabel,
+          label: event.labelId,
+        );
+        emit(LabelNotesLoadedState(notesByLabel));
+      } on Exception catch (e) {
+        emit(NoteLoadErrorState(e.toString()));
+      }
     }
   }
 }

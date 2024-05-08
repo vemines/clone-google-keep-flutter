@@ -10,8 +10,8 @@ class NoteEvent extends Equatable {
 class GetHomeNotesEvent extends NoteEvent {}
 
 class GetNoteByLabelEvent extends NoteEvent {
-  final String label;
-  GetNoteByLabelEvent(this.label);
+  final String labelId;
+  GetNoteByLabelEvent(this.labelId);
 }
 
 class GetRemindNotesEvent extends NoteEvent {}
